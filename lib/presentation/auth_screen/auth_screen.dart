@@ -124,7 +124,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             _NumButton(str: "del")
                           ],
                         ),
-
                       ],
                     ),
                   ],
@@ -140,6 +139,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
 class _NumButton extends StatelessWidget {
   final String str;
+
   const _NumButton({Key? key, required this.str}) : super(key: key);
 
   @override
@@ -150,19 +150,13 @@ class _NumButton extends StatelessWidget {
         child: ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
-                MaterialStateProperty.all(Colors.grey.shade200),
-                shape: MaterialStateProperty.all<
-                    RoundedRectangleBorder>(
+                    MaterialStateProperty.all(Colors.grey.shade200),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(3.0),
+                        borderRadius: BorderRadius.circular(3.0),
                         side: BorderSide(color: Colors.grey.shade300)))),
             onPressed: () {},
-            child: Text(
-                style:TextStyle(color: Colors.black),
-                str
-            )
-        ),
+            child: Text(style: TextStyle(color: Colors.black), str)),
       ),
     );
   }

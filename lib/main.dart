@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_magnit/presentation/auth_screen/auth_screen.dart';
 import 'package:test_magnit/presentation/hello_screen/hello_screen.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HelloScreen(),
+      home: const AuthScreen(),
     );
   }
 }

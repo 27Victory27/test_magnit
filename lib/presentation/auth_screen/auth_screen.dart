@@ -90,7 +90,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         IconButton(
                             iconSize: 60,
                             color: Colors.blue,
-                            onPressed: () {},
+                            onPressed: () {Navigator.of(context).pushReplacementNamed('/main_screen');},
                             icon: Icon(Icons.arrow_circle_right)),
                       ],
                     ),

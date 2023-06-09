@@ -18,7 +18,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      //home: const MainScreen(),
+      routes: {
+        '/' : (context) => HelloScreen(),
+        '/auth_screen': (context) => AuthScreen(), //--главный экран в навигации
+        '/main_screen':(context) => MainScreen(),
+      },
+      initialRoute: '/',
     );
   }
 }

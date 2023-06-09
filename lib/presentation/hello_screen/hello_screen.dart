@@ -54,7 +54,7 @@ class HelloScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {Navigator.of(context).pushReplacementNamed('/auth_screen');},
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all(Colors.blue),
@@ -66,7 +66,7 @@ class HelloScreen extends StatelessWidget {
                                         side: BorderSide(color: Colors.blue)))),
                             child: Text(
                                 style: TextStyle(color: Colors.white),
-                                'Продолжить на русском')),
+                                'Start Messaging')),
                       ),
                     ],
                   ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_magnit/presentation/auth_screen/auth_screen.dart';
+import 'package:test_magnit/presentation/auth_screen/bloc/auth_cubit.dart';
+import 'package:test_magnit/presentation/hello_screen/bloc/hellow_cubit.dart';
 import 'package:test_magnit/presentation/hello_screen/hello_screen.dart';
 import 'package:test_magnit/presentation/main_screen/main_screen.dart';
 
@@ -20,8 +23,14 @@ class MyApp extends StatelessWidget {
       ),
       //home: const MainScreen(),
       routes: {
-        '/' : (context) => HelloScreen(),
-        '/auth_screen': (context) => AuthScreen(), //--главный экран в навигации
+        '/' : (context) => BlocProvider<HellowCubit>(
+          create: (context) => HellowCubit()..initialData(),
+          child: const HelloScreen(),
+        ),
+        '/auth_screen': (context) => BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit()..initialData(),
+          child: const AuthScreen(),
+        ),
         '/main_screen':(context) => MainScreen(),
       },
       initialRoute: '/',

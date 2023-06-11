@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/model/channal_model.dart';
 import 'block/main_cubit.dart';
 import 'block/main_state.dart';
 
@@ -26,16 +27,16 @@ class MainScreen extends StatelessWidget {
             body: BlocBuilder<MainCubit, MainState>(
               builder: (BuildContext context, MainState state) => state.when(
                 loading: () => CircularProgressIndicator(),
-                succsess: () => Stack(
+                succsess: (channels) => Stack(
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
                     ListView.separated(
                       separatorBuilder: (BuildContext context, int index) =>
                           const ChatDivider(),
-                      itemCount: 16,
+                      itemCount: channels.length+1,
                       itemBuilder: (BuildContext context, int index) {
-                        if (index <= 14) {
-                          return ChatElement(str: index.toString());
+                        if (index < channels.length) {
+                          return ChatElement(channalModel: channels[index],);
                         } else {
                           return EndChatElemnt();
                         }
@@ -63,15 +64,16 @@ class MainScreen extends StatelessWidget {
 }
 
 class ChatElement extends StatelessWidget {
-  final String str;
+  final ChannalModel channalModel;
 
   const ChatElement({
     Key? key,
-    required this.str,
+    required this.channalModel,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final time = DateTime.fromMillisecondsSinceEpoch(channalModel.timeLastMsgChennal);
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Row(
@@ -97,9 +99,9 @@ class ChatElement extends StatelessWidget {
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
-                      'Aa $str'),
+                      '${channalModel.nameChennal}'),
                   Text(
-                    'Последнее сообщеsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfние в $str...',
+                    '${channalModel.lastMsgChennal}',
                     style: TextStyle(overflow: TextOverflow.ellipsis),
                     maxLines: 1,
                   ),
@@ -112,7 +114,7 @@ class ChatElement extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: Column(
               children: [
-                Text('12:37'),
+                Text('${time.hour}:${time.minute}'),
                 Container(
                   width: 23,
                   height: 23,
@@ -122,7 +124,7 @@ class ChatElement extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
-                          '27')),
+                          '${channalModel.unReadMsgChennal}')),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(360),
                     color: Colors.green,

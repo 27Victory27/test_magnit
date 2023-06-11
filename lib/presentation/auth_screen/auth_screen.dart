@@ -12,12 +12,22 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              actions: [Icon(Icons.shield_outlined)],
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Icon(
+                    Icons.shield_outlined,
+                    size: 27,
+                  ),
+                )
+              ],
             ),
             body: BlocBuilder<AuthCubit, AuthState>(
               builder: (BuildContext context, AuthState state) => state.when(
@@ -33,13 +43,16 @@ class _AuthScreenState extends State<AuthScreen> {
                             SizedBox(height: 20),
                             Text(
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 21,
+                                    color: Colors.black),
                                 'Номер телефона'),
-                            SizedBox(height: 20),
+                            SizedBox(height: 15),
                             Text(
-                                style:
-                                    TextStyle(fontSize: 12, color: Colors.grey),
-                                'Проверье код страны и введите свой номер телефона'),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.grey[600]),
+                                'Проверье код страны и введите свой номер телефона.'),
                             SizedBox(
                               height: 20,
                             ),
@@ -65,6 +78,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               height: 20,
                             ),
                             TextField(
+                              controller: controller,
                               keyboardType: TextInputType.none,
                               decoration: InputDecoration(
                                   focusedBorder: OutlineInputBorder(
@@ -77,7 +91,14 @@ class _AuthScreenState extends State<AuthScreen> {
                                       borderRadius: BorderRadius.circular(5)),
                                   labelText: "Номер телефона",
                                   labelStyle: TextStyle(color: Colors.blue),
-                                  suffixIcon: Icon(Icons.qr_code)),
+                                  suffixIcon: Icon(Icons.qr_code),
+                                  prefix: Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Text(
+                                        style: TextStyle(
+                                            fontSize: 17, color: Colors.black),
+                                        ' +'),
+                                  )),
                             ),
                             SizedBox(
                               height: 30,
@@ -108,34 +129,43 @@ class _AuthScreenState extends State<AuthScreen> {
                                     icon: Icon(Icons.arrow_circle_right)),
                               ],
                             ),
+                            SizedBox(height: 10),
                             Column(
                               children: [
                                 Row(
                                   children: [
-                                    _NumButton(str: "1"),
-                                    _NumButton(str: "2"),
-                                    _NumButton(str: "3")
+                                    _NumButton(
+                                        str: "1", controller: controller),
+                                    _NumButton(
+                                        str: "2", controller: controller),
+                                    _NumButton(str: "3", controller: controller)
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    _NumButton(str: "4"),
-                                    _NumButton(str: "5"),
-                                    _NumButton(str: "6")
+                                    _NumButton(
+                                        str: "4", controller: controller),
+                                    _NumButton(
+                                        str: "5", controller: controller),
+                                    _NumButton(str: "6", controller: controller)
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    _NumButton(str: "7"),
-                                    _NumButton(str: "8"),
-                                    _NumButton(str: "9")
+                                    _NumButton(
+                                        str: "7", controller: controller),
+                                    _NumButton(
+                                        str: "8", controller: controller),
+                                    _NumButton(str: "9", controller: controller)
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Expanded(child: Container()),
-                                    _NumButton(str: "0"),
-                                    _NumButton(str: "del")
+                                    _NumButton(
+                                        str: "0", controller: controller),
+                                    _NumButton(
+                                        str: "del", controller: controller)
                                   ],
                                 ),
                               ],
@@ -161,14 +191,16 @@ class _AuthScreenState extends State<AuthScreen> {
 
 class _NumButton extends StatelessWidget {
   final String str;
+  final TextEditingController controller;
 
-  const _NumButton({Key? key, required this.str}) : super(key: key);
+  const _NumButton({Key? key, required this.str, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(2.0),
         child: ElevatedButton(
             style: ButtonStyle(
                 backgroundColor:
@@ -177,8 +209,15 @@ class _NumButton extends StatelessWidget {
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3.0),
                         side: BorderSide(color: Colors.grey.shade300)))),
-            onPressed: () {},
-            child: Text(style: TextStyle(color: Colors.black), str)),
+            onPressed: () {
+              if (str != "del") {
+                controller.text += str;
+              }else{
+                controller.text = controller.text.substring(0,controller.text.length-1);
+              }
+            },
+            child:
+                Text(style: TextStyle(fontSize: 23, color: Colors.black), str)),
       ),
     );
   }

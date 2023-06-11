@@ -24,27 +24,23 @@ class HelloScreen extends StatelessWidget {
                         child: Center(
                           child: Column(
                             children: [
-                              Container(
-                                color: Colors.blue,
-                                width: 180,
-                                height: 180,
-                              ),
+                              Image.asset("assets/images/logo.webp",width: 150,height: 150,),
                               SizedBox(height: 20),
                               Text(
                                   style: TextStyle(
                                       fontSize: 25, color: Colors.black),
-                                  'iMe Messenger'),
+                                  'Telegram'),
                               SizedBox(height: 20),
                               Text(
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
+                                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                                  textAlign: TextAlign.center,
                                   'Unofficial client base on Telegram API'),
                             ],
                           ),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 10, right: 10),
+                        margin: EdgeInsets.only(top:120, left:30, right: 30),
                         child: Column(
                           children: [
                             Row(
@@ -53,7 +49,7 @@ class HelloScreen extends StatelessWidget {
                                   child: TextButton(
                                       onPressed: () {},
                                       child: Text(
-                                          style: TextStyle(color: Colors.blue),
+                                          style: TextStyle(fontSize: 17, color: Colors.blue),
                                           'Продолжить на русском')),
                                 )
                               ],
@@ -80,7 +76,7 @@ class HelloScreen extends StatelessWidget {
                                                   side: BorderSide(
                                                       color: Colors.blue)))),
                                       child: Text(
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(fontSize: 17, color: Colors.white),
                                           'Start Messaging')),
                                 ),
                               ],

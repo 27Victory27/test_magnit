@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         ),
         '/chat_screen' : (context) => ChatScreen(),
       },
-      initialRoute: '/chat_screen',
+      initialRoute: '/auth_screen',
     );
   }
 }

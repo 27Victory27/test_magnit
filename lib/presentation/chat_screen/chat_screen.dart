@@ -1,90 +1,87 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:test_magnit/data/model/chat_element_model.dart';
+
+import 'block/chat_cubit.dart';
+import 'block/chat_state.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List _elements = [
-      {
-        'massage':
-            'kjdfksjdhksjdfhksdjfhskdfjhsdkjfhskjdfhksjdfhskdjfhksdhfkjsd',
-        'group': '10 июня'
-      },
-      {'massage': 'Will', 'group': '10 июня'},
-      {'massage': 'skl;dflskdjflksdjflskdfjslkdfj', 'group': '10 июня'},
-      {'massage': 'skdjflskdjflsdkfj', 'group': '10 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '9 июня'},
-      {'massage': 'Beth', 'group': '9 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '9 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '9 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '8 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '8 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '8 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '7 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '7 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '7 июня'},
-      {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '17 июня'},
-    ];
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blue,
-        title: const _AppBarInfo(
-            nameChat: 'Степан Элизборян', onlineTime: 1686237244),
-      ),
-      backgroundColor: Colors.lightGreenAccent,
-      body: Column(
-        children: [
-          Expanded(
-            child: GroupedListView<dynamic, String>(
-                useStickyGroupSeparators: true,
-                floatingHeader: true,
-                groupBy: (element) => element['group'],
-                groupSeparatorBuilder: (String value) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        value,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Colors.blue,
+          title: const _AppBarInfo(
+              nameChat: 'Степан Элизборян', onlineTime: 1686237244),
+        ),
+        backgroundColor: Colors.lightGreenAccent,
+        body: BlocBuilder<ChatCubit, ChatState>(
+          builder: (BuildContext context, ChatState state) => state.when(
+            loading: () => CircularProgressIndicator(),
+            succsess: (listMapChatElements, int userID) => Column(
+              children: [
+                Expanded(
+                    child: GroupedListView<Map<String, dynamic>, String>(
+                        useStickyGroupSeparators: true,
+                        floatingHeader: true,
+                        groupBy: (element) => element['time'],
+                        groupSeparatorBuilder: (String value) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              value,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          );
+                        },
+                        elements: listMapChatElements,
+                        itemBuilder: (BuildContext context,
+                            Map<String, dynamic> element) {
+                          //{"message":ChatElementModel(),"time":9:6}
+                          if ((element["message"] as ChatElementModel).userId ==
+                              userID) {
+                            return MyChatElement(
+                                chatMessage:
+                                    (element["message"] as ChatElementModel)
+                                        .msgText);
+                          } else {
+                            return OtherChatElement(
+                                chatMessage:
+                                    (element["message"] as ChatElementModel)
+                                        .msgText);
+                          }
+                        })),
+                Row(
+                  children: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.mood)),
+                    Expanded(
+                        child: TextField(
+                      maxLines: 6,
+                      minLines: 1,
+                      decoration: InputDecoration(
+                        hintText: 'Сообщение',
+                        border: InputBorder.none,
                       ),
-                    ),
-                elements: _elements,
-                itemBuilder: (BuildContext context, element1) {
-                  if (_elements.indexWhere((element) => element == element1) %
-                          2 ==
-                      0)
-                    return MyChatElement(
-                        chatMessage:
-                            '''1dklgldslksgjlkdfgjldkfgjldkfgjdlfkgjdlfgjdlkfgjdlfkgjdlfkg''');
-                  else
-                    return OtherChatElement(
-                        chatMessage:
-                            '''1dklgldslksgjlkdfgjldkfgjldkfgjdlfkgjdlfgjdlkfgjdlfkgjdlfkg''');
-                }),
-          ),
-          Row(
-            children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.mood)),
-              Expanded(
-                  child: TextField(
-                    maxLines: 6,
-                minLines: 1,
-                decoration: InputDecoration(
-                  hintText: 'Сообщение',
-                  border: InputBorder.none,
+                    )),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.attach_file)),
+                    IconButton(
+                        onPressed: () {}, icon: Icon(Icons.keyboard_voice)),
+                  ],
                 ),
-              )),
-              IconButton(onPressed: () {}, icon: Icon(Icons.attach_file)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.keyboard_voice)),
-            ],
+              ],
+            ),
+            failure: (error) => Container(
+              color: Colors.red,
+            ),
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
 

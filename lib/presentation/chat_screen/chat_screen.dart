@@ -8,7 +8,11 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List _elements = [
-      {'massage': 'kjdfksjdhksjdfhksdjfhskdfjhsdkjfhskjdfhksjdfhskdjfhksdhfkjsd', 'group': '10 июня'},
+      {
+        'massage':
+            'kjdfksjdhksjdfhksdjfhskdfjhsdkjfhskjdfhksjdfhskdjfhksdhfkjsd',
+        'group': '10 июня'
+      },
       {'massage': 'Will', 'group': '10 июня'},
       {'massage': 'skl;dflskdjflksdjflskdfjslkdfj', 'group': '10 июня'},
       {'massage': 'skdjflskdjflsdkfj', 'group': '10 июня'},
@@ -23,46 +27,75 @@ class ChatScreen extends StatelessWidget {
       {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '7 июня'},
       {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '7 июня'},
       {'massage': 'kljlksdjflskdjflskdfjlskdfj', 'group': '17 июня'},
-
     ];
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.blue,
         title: const _AppBarInfo(
-            nameChat: 'Типичный ssssssssssssssssssss', followers: 125.7),
+            nameChat: 'Степан Элизборян', onlineTime: 1686237244),
       ),
       backgroundColor: Colors.lightGreenAccent,
-      body: GroupedListView<dynamic, String>(
-        useStickyGroupSeparators: true,
-        floatingHeader: true,
-        groupBy: (element)=> element['group'],
-          groupSeparatorBuilder: (String value) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              value,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+      body: Column(
+        children: [
+          Expanded(
+            child: GroupedListView<dynamic, String>(
+                useStickyGroupSeparators: true,
+                floatingHeader: true,
+                groupBy: (element) => element['group'],
+                groupSeparatorBuilder: (String value) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        value,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                elements: _elements,
+                itemBuilder: (BuildContext context, element1) {
+                  if (_elements.indexWhere((element) => element == element1) %
+                          2 ==
+                      0)
+                    return MyChatElement(
+                        chatMessage:
+                            '''1dklgldslksgjlkdfgjldkfgjldkfgjdlfkgjdlfgjdlkfgjdlfkgjdlfkg''');
+                  else
+                    return OtherChatElement(
+                        chatMessage:
+                            '''1dklgldslksgjlkdfgjldkfgjldkfgjdlfkgjdlfgjdlkfgjdlfkgjdlfkg''');
+                }),
           ),
-        elements: _elements,
-          itemBuilder: (BuildContext context, element1) {
-            if(_elements.indexWhere((element) => element ==element1 )%2==0)
-            return MyChatElement(chatMessage: '''1dklgldslksgjlkdfgjldkfgjldkfgjdlfkgjdlfgjdlkfgjdlfkgjdlfkg''');
-            else    return OtherChatElement(chatMessage: '''1dklgldslksgjlkdfgjldkfgjldkfgjdlfkgjdlfgjdlkfgjdlfkgjdlfkg''');
-          }),
+          Row(
+            children: [
+              IconButton(onPressed: () {}, icon: Icon(Icons.mood)),
+              Expanded(
+                  child: TextField(
+                    maxLines: 6,
+                minLines: 1,
+                decoration: InputDecoration(
+                  hintText: 'Сообщение',
+                  border: InputBorder.none,
+                ),
+              )),
+              IconButton(onPressed: () {}, icon: Icon(Icons.attach_file)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.keyboard_voice)),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _AppBarInfo extends StatefulWidget {
   final String nameChat;
-  final double followers;
+  final int onlineTime;
 
   const _AppBarInfo({
     Key? key,
     required this.nameChat,
-    required this.followers,
+    required this.onlineTime,
   }) : super(key: key);
 
   @override
@@ -75,7 +108,11 @@ class _AppBarInfoState extends State<_AppBarInfo> {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 3, bottom: 7, right: 5),
+          padding: const EdgeInsets.only(
+            top: 3,
+            bottom: 7,
+            right: 13,
+          ),
           child: Container(
             width: 47,
             height: 47,
@@ -101,7 +138,7 @@ class _AppBarInfoState extends State<_AppBarInfo> {
                     '${widget.nameChat}'),
                 Text(
                     style: TextStyle(fontSize: 14, color: Colors.blueGrey[100]),
-                    '${widget.followers}K подписчиков')
+                    'был(а) в ${widget.onlineTime}')
               ],
             ),
           ),
@@ -149,7 +186,8 @@ class MyChatElement extends StatelessWidget {
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 8.0,top: 8,bottom: 8,right: 70),
+                padding: const EdgeInsets.only(
+                    left: 8.0, top: 8, bottom: 8, right: 70),
                 child: Text('$chatMessage'),
               ),
               FittedBox(
@@ -168,14 +206,15 @@ class MyChatElement extends StatelessWidget {
 class OtherChatElement extends StatelessWidget {
   final String chatMessage;
 
-  const OtherChatElement({Key? key, required this.chatMessage}) : super(key: key);
+  const OtherChatElement({Key? key, required this.chatMessage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0,right: 8,top:3),
+        padding: const EdgeInsets.only(left: 8.0, right: 8, top: 3),
         child: Container(
           constraints: BoxConstraints(maxWidth: 300),
           decoration: BoxDecoration(
@@ -186,7 +225,8 @@ class OtherChatElement extends StatelessWidget {
             alignment: Alignment.bottomRight,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 8.0,top: 8,bottom: 8,right: 70),
+                padding: const EdgeInsets.only(
+                    left: 8.0, top: 8, bottom: 8, right: 70),
                 child: Text('$chatMessage'),
               ),
               Text("10:27"),

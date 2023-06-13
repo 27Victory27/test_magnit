@@ -74,66 +74,71 @@ class ChatElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final time = DateTime.fromMillisecondsSinceEpoch(channalModel.timeLastMsgChennal);
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(360),
-              color: Colors.black,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: (){Navigator.of(context)
+          .pushNamed('/chat_screen',arguments:channalModel);},
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(360),
+                color: Colors.black,
+              ),
             ),
-          ),
-          SizedBox(width: 5),
-          Expanded(
-            child: Padding(
+            SizedBox(width: 5),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        '${channalModel.nameChennal}'),
+                    Text(
+                      '${channalModel.lastMsgChennal}',
+                      style: TextStyle(overflow: TextOverflow.ellipsis),
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 5),
+            Padding(
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                      '${channalModel.nameChennal}'),
-                  Text(
-                    '${channalModel.lastMsgChennal}',
-                    style: TextStyle(overflow: TextOverflow.ellipsis),
-                    maxLines: 1,
-                  ),
+                  Text('${time.hour}:${time.minute}'),
+                  Container(
+                    width: 23,
+                    height: 23,
+                    child: Center(
+                        child: Text(
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                            '${channalModel.unReadMsgChennal}')),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(360),
+                      color: Colors.green,
+                    ),
+                  )
                 ],
               ),
             ),
-          ),
-          SizedBox(width: 5),
-          Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: Column(
-              children: [
-                Text('${time.hour}:${time.minute}'),
-                Container(
-                  width: 23,
-                  height: 23,
-                  child: Center(
-                      child: Text(
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold),
-                          '${channalModel.unReadMsgChennal}')),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(360),
-                    color: Colors.green,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

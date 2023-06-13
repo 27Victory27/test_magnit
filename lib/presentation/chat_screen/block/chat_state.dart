@@ -5,6 +5,6 @@ part 'chat_state.freezed.dart';
 @freezed
 class ChatState with _$ChatState{
   const factory ChatState.loading() = _Loading;
-  const factory ChatState.succsess(List<Map<String,dynamic>> chatElementModel, int idCurrentUser) = _Succsess;
+  const factory ChatState.succsess(List<Map<String,dynamic>> chatElementModel, int idCurrentUser, String nameOtherUser) = _Succsess;
   const factory ChatState.failure({Object? error}) = _Failure;
 }

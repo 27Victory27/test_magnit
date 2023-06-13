@@ -16,14 +16,18 @@ class ChatScreen extends StatelessWidget {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.blue,
-          title: const _AppBarInfo(
-              nameChat: 'Степан Элизборян', onlineTime: 1686237244),
+          title: BlocBuilder<ChatCubit, ChatState>(
+          builder: (BuildContext context, ChatState state) => state.maybeWhen(
+          loading: () => CircularProgressIndicator(),
+          succsess: (listMapChatElements, int userID,String nameOtherUser) => _AppBarInfo(
+              nameChat: nameOtherUser, onlineTime: 1686237244), orElse: () { return Text('Упс, ошибка'); },
+    ))
         ),
         backgroundColor: Colors.lightGreenAccent,
         body: BlocBuilder<ChatCubit, ChatState>(
           builder: (BuildContext context, ChatState state) => state.when(
             loading: () => CircularProgressIndicator(),
-            succsess: (listMapChatElements, int userID) => Column(
+            succsess: (listMapChatElements, int userID,String nameOtherUser) => Column(
               children: [
                 Expanded(
                     child: GroupedListView<Map<String, dynamic>, String>(

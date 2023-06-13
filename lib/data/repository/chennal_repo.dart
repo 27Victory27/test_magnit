@@ -2,6 +2,9 @@ import '../model/channal_model.dart';
 
 class ChennnalRepo{
   final List<ChannalModel> myList = [
+    ChannalModel(27,'test_img_hanna.jpg', 'Степан Елизборян', 'testLastMsgChennal1', 1686237244000, 17),
+    ChannalModel(17,'test_img_hanna.jpg', 'Виталий Завадский', 'testLastMsgChennal22', 1686237244000, 17),
+
     ChannalModel(0,'test_img_hanna.jpg', 'testNameChennal1', 'testLastMsgChennal1', 1686237244000, 17),
     ChannalModel(1,'test_img_hanna.jpg', 'testNameChennal22', 'testLastMsgChennal22', 1686237244000, 17),
     ChannalModel(2,'test_img_hanna.jpg', 'testNameChennal333', 'testLastMsgChennal333', 1686237244000, 17),

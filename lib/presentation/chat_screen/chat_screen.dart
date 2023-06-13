@@ -23,7 +23,7 @@ class ChatScreen extends StatelessWidget {
               nameChat: nameOtherUser, onlineTime: 1686237244), orElse: () { return Text('Упс, ошибка'); },
     ))
         ),
-        backgroundColor: Colors.lightGreenAccent,
+        backgroundColor: Colors.green,
         body: BlocBuilder<ChatCubit, ChatState>(
           builder: (BuildContext context, ChatState state) => state.when(
             loading: () => CircularProgressIndicator(),
@@ -35,13 +35,21 @@ class ChatScreen extends StatelessWidget {
                         floatingHeader: true,
                         groupBy: (element) => element['time'],
                         groupSeparatorBuilder: (String value) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              value,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                          return Align(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[800]?.withOpacity(0.2),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 1.0,bottom: 1,left: 10,right: 10),
+                                child: Text(
+                                  value,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.white),
+                                ),
+                              ),
                             ),
                           );
                         },
@@ -215,7 +223,7 @@ class OtherChatElement extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8, top: 3),
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           constraints: BoxConstraints(maxWidth: 300),
           decoration: BoxDecoration(

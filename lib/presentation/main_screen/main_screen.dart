@@ -83,8 +83,10 @@ class ChatElement extends StatelessWidget {
         child: Row(
           children: [
             Container(
+              child: Image.asset('assets/images/${channalModel.img}'),
               width: 50,
               height: 50,
+              clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(360),
                 color: Colors.black,

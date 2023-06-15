@@ -7,13 +7,25 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import 'package:test_magnit/main.dart';
 
 void main() {
-  final test = Test();
+  int time1 = 1686219244000;
+  int time2 = 1686222844000;
+  final time = DateTime.fromMillisecondsSinceEpoch(time1);
+  print(time);
+}
 
-  test.testFunc((p6, p1) => print(p1));
+class TestConstructor {
+  String per ="";
+
+  TestConstructor(String myPer){per = myPer;}
+
+  String testFunc() {
+    return per;
+  }
 }
 
 class Test {

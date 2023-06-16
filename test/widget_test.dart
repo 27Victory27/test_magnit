@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
-import 'package:test_magnit/main.dart';
+import 'package:test_magnit/main/main.dart';
 
 void main() {
   int time1 = 1686219244000;

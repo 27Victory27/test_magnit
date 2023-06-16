@@ -23,7 +23,11 @@ class MainScreen extends StatelessWidget {
                 )
               ],
             ),
-            drawer: Drawer(),
+            drawer: Drawer(child: Row(
+              children: [
+
+              ],
+            ),),
             body: BlocBuilder<MainCubit, MainState>(
               builder: (BuildContext context, MainState state) => state.when(
                 loading: () => CircularProgressIndicator(),

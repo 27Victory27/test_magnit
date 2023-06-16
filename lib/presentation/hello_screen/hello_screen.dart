@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_magnit/main/bloc/theme_bloc.dart';
+import 'package:test_magnit/main/bloc/theme_state.dart';
 import 'package:test_magnit/presentation/hello_screen/bloc/hellow_cubit.dart';
 import 'package:test_magnit/presentation/hello_screen/bloc/hellow_state.dart';
+import 'package:test_magnit/themes/theme.dart';
 
 class HelloScreen extends StatelessWidget {
   const HelloScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //final themeProvider = Provider.of<ThemeProvider>(context);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        actions: [Icon(Icons.nights_stay)],
+        actions: [BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (BuildContext contextBuild, ThemeState stateTheme) =>stateTheme.when(
+              light: (){
+                return IconButton(
+                  icon:  Icon(Icons.nights_stay
+                  ),onPressed: (){
+                  context.read<ThemeCubit>().setDarkTheme();
+                },);
+              },
+              dark: (){
+                return IconButton(
+                  icon:  Icon(Icons.sunny
+                  ),onPressed: (){
+                  context.read<ThemeCubit>().setLightTheme();
+                },);
+              })
+        )],
       ),
       body: BlocBuilder<HellowCubit, HellowState>(
           builder: (BuildContext context, HellowState state) => state.when(

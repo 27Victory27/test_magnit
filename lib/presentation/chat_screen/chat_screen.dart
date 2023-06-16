@@ -252,7 +252,7 @@ class _AppBarInfoState extends State<_AppBarInfo> {
           Visibility(
             visible:_textField.text.isNotEmpty,
             child: IconButton(
-                onPressed: () ,
+                onPressed: () {},
                 icon: Icon(Icons.search)),
           ),
         ],

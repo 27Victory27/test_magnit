@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_magnit/main/account_panel/account_panel_cubit.dart';
 
 import '../../data/model/channal_model.dart';
+import '../../data/model/user_model.dart';
+import '../../main/account_panel/account_panel_state.dart';
+import '../../main/bloc/theme_bloc.dart';
+import '../../main/bloc/theme_state.dart';
 import 'block/main_cubit.dart';
 import 'block/main_state.dart';
 
@@ -23,11 +28,7 @@ class MainScreen extends StatelessWidget {
                 )
               ],
             ),
-            drawer: Drawer(child: Row(
-              children: [
-
-              ],
-            ),),
+            drawer: Drawer(child: AccountPanelInfo(),),
             body: BlocBuilder<MainCubit, MainState>(
               builder: (BuildContext context, MainState state) => state.when(
                 loading: () => CircularProgressIndicator(),
@@ -64,6 +65,95 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             )));
+  }
+}
+
+class AccountPanelInfo extends StatelessWidget {
+  const AccountPanelInfo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<AccountPanelCubit>(
+      create: (context) => AccountPanelCubit()..initialData(),
+      child: BlocBuilder<AccountPanelCubit, AccountPanelState>(
+          builder: (BuildContext context, AccountPanelState state) => state.when(
+            loading: () => CircularProgressIndicator(),
+            succsess: (UserModel userModel) {
+              return
+                Column(
+                  children: [
+                    Container(
+                      color: Colors.blue,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 15,left: 10,right: 8),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Image.asset('assets/images/${userModel.img}'),
+                                  width: 50,
+                                  height: 50,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(360),
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Expanded(child: SizedBox()),
+                                Container(
+                                  child: BlocBuilder<ThemeCubit, ThemeState>(
+                                      builder: (BuildContext contextBuild, ThemeState stateTheme) =>stateTheme.when(
+                                          light: (){
+                                            return IconButton(
+                                              icon:  Icon(Icons.nights_stay
+                                              ),onPressed: (){
+                                              context.read<ThemeCubit>().setDarkTheme();
+                                            },);
+                                          },
+                                          dark: (){
+                                            return IconButton(
+                                              icon:  Icon(Icons.sunny
+                                              ),onPressed: (){
+                                              context.read<ThemeCubit>().setLightTheme();
+                                            },);
+                                          })
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${userModel.userName}'),
+                                    Text('${userModel.userTelephone}')
+                                  ],
+                                ),
+                                Expanded(child: SizedBox()),
+                                IconButton(onPressed: (){}, icon: Icon(Icons.keyboard_arrow_down))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+            },
+            failure: (error) => Container(
+              color: Colors.red,
+            ),
+
+          )
+
+      ),
+    );
   }
 }
 

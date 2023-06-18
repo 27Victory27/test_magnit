@@ -1,3 +1,5 @@
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,19 +9,14 @@ import 'package:test_magnit/data/model/chat_element_model.dart';
 import 'block/chat_cubit.dart';
 import 'block/chat_state.dart';
 
-
-
-
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
     ScrollController controller = ScrollController();
+    // var isEmojiVisible = false.obs;
     return Scaffold(
-
         appBar: AppBar(
             automaticallyImplyLeading: false,
             iconTheme: IconThemeData(color: Colors.white),
@@ -48,11 +45,11 @@ class ChatScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: GroupedListView<Map<String, dynamic>, String>(
-                    controller: controller,
+                      controller: controller,
                       reverse: true,
                       useStickyGroupSeparators: true,
                       floatingHeader: true,
-                      sort:false,
+                      sort: false,
                       groupBy: (element) => element['time'],
                       groupSeparatorBuilder: (String value) {
                         return Row(
@@ -79,17 +76,20 @@ class ChatScreen extends StatelessWidget {
                         );
                       },
                       elements: listMapChatElements,
-                      itemBuilder: (BuildContext context,
-                          Map<String, dynamic> element) {
+                      itemBuilder:
+                          (BuildContext context, Map<String, dynamic> element) {
                         //{"message":ChatElementModel(),"time":9:6}
-                        final time =  DateTime.fromMillisecondsSinceEpoch((element["message"] as ChatElementModel).msgTime);
+                        final time = DateTime.fromMillisecondsSinceEpoch(
+                            (element["message"] as ChatElementModel).msgTime);
                         if ((element["message"] as ChatElementModel).userId ==
                             userID) {
                           return MyChatElement(
                             chatMessage:
                                 (element["message"] as ChatElementModel)
                                     .msgText,
-                            chatMessageTime: time.hour.toString() + ':' + time.minute.toString(),
+                            chatMessageTime: time.hour.toString() +
+                                ':' +
+                                time.minute.toString(),
                           );
                         } else {
                           return OtherChatElement(
@@ -99,31 +99,7 @@ class ChatScreen extends StatelessWidget {
                         }
                       }),
                 ),
-                Row(
-                  children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.mood)),
-                    Expanded(
-                        child: TextField(
-                          textInputAction: TextInputAction.done,
-                          onSubmitted: (msg){
-                            context.read<ChatCubit>().addMassege(msg);
-                            controller.animateTo(
-                              controller.position.minScrollExtent+1,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeOut);
-                          },
-                      maxLines: 6,
-                      minLines: 1,
-                      decoration: InputDecoration(
-                        hintText: 'Сообщение',
-                        border: InputBorder.none,
-                      ),
-                    )),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.attach_file)),
-                    IconButton(
-                        onPressed: () {}, icon: Icon(Icons.keyboard_voice)),
-                  ],
-                ),
+                Emoji(controller: controller),
               ],
             ),
             failure: (error) => Container(
@@ -253,7 +229,9 @@ class _AppBarInfoState extends State<_AppBarInfo> {
               controller: _textField,
               maxLines: 6,
               minLines: 1,
-              onChanged: (text){setState(() {});},
+              onChanged: (text) {
+                setState(() {});
+              },
               decoration: InputDecoration(
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 hintText: 'Поиск',
@@ -262,16 +240,16 @@ class _AppBarInfoState extends State<_AppBarInfo> {
             ),
           ),
           Visibility(
-            visible:_textField.text.isNotEmpty,
+            visible: _textField.text.isNotEmpty,
             child: IconButton(
-                onPressed: () {setState(_textField.clear);},
+                onPressed: () {
+                  setState(_textField.clear);
+                },
                 icon: Icon(Icons.clear)),
           ),
           Visibility(
-            visible:_textField.text.isNotEmpty,
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.search)),
+            visible: _textField.text.isNotEmpty,
+            child: IconButton(onPressed: () {}, icon: Icon(Icons.search)),
           ),
         ],
       );
@@ -363,6 +341,115 @@ class OtherChatElement extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Emoji extends StatefulWidget {
+  final ScrollController controller;
+
+  const Emoji({super.key, required this.controller});
+
+  @override
+  State<Emoji> createState() => _EmojiState();
+}
+
+class _EmojiState extends State<Emoji> {
+  bool emojiFlag = true;
+  FocusNode focusNode = FocusNode();
+  TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        emojiFlag = true;
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            IconButton(
+                onPressed: () {
+                  emojiFlag = !emojiFlag;
+                  if (!emojiFlag) {
+                    focusNode.unfocus();
+                  }
+                  setState(() {});
+                },
+                icon: Icon(Icons.emoji_emotions)),
+            Expanded(
+                child: TextField(
+              controller: textEditingController,
+              focusNode: focusNode,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (msg) {
+                context.read<ChatCubit>().addMassege(msg);
+                widget.controller.animateTo(
+                    widget.controller.position.minScrollExtent + 1,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOut);
+              },
+              maxLines: 6,
+              minLines: 1,
+              decoration: InputDecoration(
+                hintText: 'Сообщение',
+                border: InputBorder.none,
+              ),
+            )),
+            IconButton(onPressed: () {}, icon: Icon(Icons.attach_file)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.keyboard_voice)),
+          ],
+        ),
+        Offstage(
+          offstage: emojiFlag,
+          child: SizedBox(
+            height: 250,
+            child: EmojiPicker(
+              onEmojiSelected: (category, emoji) {
+                textEditingController.text += emoji.emoji;
+              },
+              onBackspacePressed: () {},
+              config: Config(
+                columns: 7,
+                verticalSpacing: 0,
+                horizontalSpacing: 0,
+                gridPadding: EdgeInsets.zero,
+                initCategory: Category.RECENT,
+                bgColor: Color(0xFFF2F2F2),
+                indicatorColor: Colors.blue,
+                iconColor: Colors.grey,
+                iconColorSelected: Colors.blue,
+                backspaceColor: Colors.blue,
+                skinToneDialogBgColor: Colors.white,
+                skinToneIndicatorColor: Colors.grey,
+                enableSkinTones: true,
+                recentTabBehavior: RecentTabBehavior.RECENT,
+                recentsLimit: 28,
+                noRecents: const Text(
+                  'No Recents',
+                  style: TextStyle(fontSize: 20, color: Colors.black26),
+                  textAlign: TextAlign.center,
+                ),
+                // Needs to be const Widget
+                loadingIndicator: const SizedBox.shrink(),
+                // Needs to be const Widget
+                tabIndicatorAnimDuration: kTabScrollDuration,
+                categoryIcons: const CategoryIcons(),
+                buttonMode: ButtonMode.MATERIAL,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

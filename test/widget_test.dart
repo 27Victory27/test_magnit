@@ -16,6 +16,7 @@ void main() {
   int time2 = 1686222844000;
   final time = DateTime.fromMillisecondsSinceEpoch(time1);
   print(time);
+  TestConstructor("1");
 }
 
 class TestConstructor {

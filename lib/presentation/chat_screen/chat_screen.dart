@@ -7,12 +7,19 @@ import 'package:test_magnit/data/model/chat_element_model.dart';
 import 'block/chat_cubit.dart';
 import 'block/chat_state.dart';
 
+
+
+
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+    ScrollController controller = ScrollController();
     return Scaffold(
+
         appBar: AppBar(
             automaticallyImplyLeading: false,
             iconTheme: IconThemeData(color: Colors.white),
@@ -40,60 +47,71 @@ class ChatScreen extends StatelessWidget {
                 Column(
               children: [
                 Expanded(
-                    child: GroupedListView<Map<String, dynamic>, String>(
-                        useStickyGroupSeparators: true,
-                        floatingHeader: true,
-                        sort:false,
-                        groupBy: (element) => element['time'],
-                        groupSeparatorBuilder: (String value) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: null,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey[800]?.withOpacity(0.2),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 1.0, bottom: 1, left: 10, right: 10),
-                                  child: Text(
-                                    value,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                        fontSize: 14, color: Colors.white),
-                                  ),
+                  child: GroupedListView<Map<String, dynamic>, String>(
+                    controller: controller,
+                      reverse: true,
+                      useStickyGroupSeparators: true,
+                      floatingHeader: true,
+                      sort:false,
+                      groupBy: (element) => element['time'],
+                      groupSeparatorBuilder: (String value) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: null,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[800]?.withOpacity(0.2),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 1.0, bottom: 1, left: 10, right: 10),
+                                child: Text(
+                                  value,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.white),
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        );
+                      },
+                      elements: listMapChatElements,
+                      itemBuilder: (BuildContext context,
+                          Map<String, dynamic> element) {
+                        //{"message":ChatElementModel(),"time":9:6}
+                        final time =  DateTime.fromMillisecondsSinceEpoch((element["message"] as ChatElementModel).msgTime);
+                        if ((element["message"] as ChatElementModel).userId ==
+                            userID) {
+                          return MyChatElement(
+                            chatMessage:
+                                (element["message"] as ChatElementModel)
+                                    .msgText,
+                            chatMessageTime: time.hour.toString() + ':' + time.minute.toString(),
                           );
-                        },
-                        elements: listMapChatElements,
-                        itemBuilder: (BuildContext context,
-                            Map<String, dynamic> element) {
-                          //{"message":ChatElementModel(),"time":9:6}
-                          final time =  DateTime.fromMillisecondsSinceEpoch((element["message"] as ChatElementModel).msgTime);
-                          if ((element["message"] as ChatElementModel).userId ==
-                              userID) {
-                            return MyChatElement(
+                        } else {
+                          return OtherChatElement(
                               chatMessage:
                                   (element["message"] as ChatElementModel)
-                                      .msgText,
-                              chatMessageTime: time.hour.toString() + ':' + time.minute.toString(),
-                            );
-                          } else {
-                            return OtherChatElement(
-                                chatMessage:
-                                    (element["message"] as ChatElementModel)
-                                        .msgText);
-                          }
-                        })),
+                                      .msgText);
+                        }
+                      }),
+                ),
                 Row(
                   children: [
                     IconButton(onPressed: () {}, icon: Icon(Icons.mood)),
                     Expanded(
                         child: TextField(
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: (msg){
+                            context.read<ChatCubit>().addMassege(msg);
+                            controller.animateTo(
+                              controller.position.minScrollExtent+1,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeOut);
+                          },
                       maxLines: 6,
                       minLines: 1,
                       decoration: InputDecoration(

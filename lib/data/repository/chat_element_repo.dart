@@ -59,7 +59,7 @@ class ChatElementRepo{
         selectMyList.add(myList[i]);
       }
     }
-    selectMyList.sort((a,b) => (a.msgTime.compareTo(b.msgTime)));
+    selectMyList.sort((b,a) => (a.msgTime.compareTo(b.msgTime)));
     return selectMyList;
   }
 

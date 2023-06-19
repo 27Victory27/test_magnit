@@ -190,6 +190,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
                 failure: (error) => Container(
                   color: Colors.red,
+                  child: Center(child:Text(error.toString())),
                 ),
                 codeSent: () {
                   return ListView(

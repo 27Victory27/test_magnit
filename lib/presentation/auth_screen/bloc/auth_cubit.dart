@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(): super(const AuthState.loading());
+  AuthCubit() : super(const AuthState.loading());
   FirebaseAuth auth = FirebaseAuth.instance;
 
   String verificationId = "";
@@ -17,21 +17,19 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> authPhone(String phoneNumber) async {
-
-
     //ConfirmationResult confirmationResult = await auth.signInWithPhoneNumber('+$phoneNumber');
-    
+
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       timeout: const Duration(seconds: 60),
       codeAutoRetrievalTimeout: (String verificationId) {
         // Auto-resolution timed out...
       },
-      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async{
+      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
         try {
           await auth.signInWithCredential(phoneAuthCredential);
           emit(AuthState.auth());
-        }catch(e){
+        } catch (e) {
           emit(AuthState.failure(error: e));
         }
       },
@@ -43,20 +41,20 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthState.codeSent());
       },
     );
-
-
-
   }
-  Future<void> singInWithSMS(String sms)async {
-    // Create a PhoneAuthCredential with the code
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
 
-    // Sign the user in (or link) with the credential
-    final result = await auth.signInWithCredential(credential);
-    if(result.user != null){
+  Future<void> singInWithSMS(String sms) async {
+    // Create a PhoneAuthCredential with the code
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId, smsCode: sms);
+
+      // Sign the user in (or link) with the credential
+
+      final result = await auth.signInWithCredential(credential);
       emit(AuthState.auth());
-    }else{
-      emit(AuthState.failure(error: ""));
+    } catch (e) {
+      emit(AuthState.failure(error: "singInWithSMS error"));
     }
-}
+  }
 }

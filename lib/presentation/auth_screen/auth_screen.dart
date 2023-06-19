@@ -105,7 +105,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                           ' +'),
                                     )),
                               ),
-                              TextField(controller: controllerSMS,keyboardType: TextInputType.none,),
                               SizedBox(
                                 height: 30,
                               ),
@@ -129,16 +128,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                       iconSize: 60,
                                       color: Colors.blue,
                                       onPressed: () {
-                                        // final cubit =context.read<AuthCubit>();
-                                        // if(cubit.verificationId.isEmpty) {
-                                        //   context.read<AuthCubit>().authPhone(
-                                        //      "+"+controller.text);
-                                        // }else{
-                                        //   context.read<AuthCubit>().singInWithSMS(
-                                        //       controllerSMS.text);
-                                        // }
-                                        Navigator.of(context)
-                                            .pushReplacementNamed('/main_screen');
+                                          context.read<AuthCubit>().authPhone(
+                                             "+"+controller.text);
+                                        // Navigator.of(context)
+                                        //     .pushReplacementNamed('/main_screen');
                                       },
                                       icon: Icon(Icons.arrow_circle_right)),
                                 ],
@@ -198,6 +191,154 @@ class _AuthScreenState extends State<AuthScreen> {
                 failure: (error) => Container(
                   color: Colors.red,
                 ),
+                codeSent: () {
+                  return ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 30, right: 30, top: 30, bottom: 60),
+                        child: Center(
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Text(
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 21,
+                                      color: Colors.black),
+                                  'Номер телефона'),
+                              SizedBox(height: 15),
+                              Text(
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 17, color: Colors.grey[600]),
+                                  'Проверье код страны и введите свой номер телефона.'),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextField(
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 3, color: Colors.blue),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    disabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    labelText: "Страна",
+                                    suffixIcon: Icon(Icons.chevron_right)),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextField(
+                                enabled: false,
+                                keyboardType: TextInputType.none,
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 3, color: Colors.blue),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2, color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    labelText: "Номер телефона",
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    suffixIcon: Icon(Icons.qr_code),
+                                    prefix: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Text(
+                                          style: TextStyle(
+                                              fontSize: 17, color: Colors.black),
+                                          ' +'),
+                                    )),
+                              ),
+                              TextField(controller: controllerSMS,keyboardType: TextInputType.none,),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          style:
+                                          TextStyle(color: Colors.grey[600]),
+                                          'Продолжая, вы соглашаетесь с'),
+                                      Text(
+                                          style:
+                                          TextStyle(color: Colors.blue[700]),
+                                          'Пользовательским Соглашением'),
+                                    ],
+                                  ),
+                                  Expanded(child: SizedBox()),
+                                  IconButton(
+                                      iconSize: 60,
+                                      color: Colors.blue,
+                                      onPressed: () {
+                                          context.read<AuthCubit>().singInWithSMS(
+                                              controllerSMS.text);
+                                        // Navigator.of(context)
+                                        //     .pushReplacementNamed('/main_screen');
+                                      },
+                                      icon: Icon(Icons.arrow_circle_right)),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      _NumButton(
+                                          str: "1", controller: controllerSMS),
+                                      _NumButton(
+                                          str: "2", controller: controllerSMS),
+                                      _NumButton(str: "3", controller: controllerSMS)
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      _NumButton(
+                                          str: "4", controller: controllerSMS),
+                                      _NumButton(
+                                          str: "5", controller: controllerSMS),
+                                      _NumButton(str: "6", controller: controllerSMS)
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      _NumButton(
+                                          str: "7", controller: controllerSMS),
+                                      _NumButton(
+                                          str: "8", controller: controllerSMS),
+                                      _NumButton(str: "9", controller: controllerSMS)
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(child: Container()),
+                                      _NumButton(
+                                          str: "0", controller: controllerSMS),
+                                      _NumButton(
+                                          str: "del", controller: controllerSMS)
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+              },
               ),
             )));
   }

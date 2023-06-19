@@ -14,7 +14,7 @@ import 'package:test_magnit/presentation/main_screen/block/main_cubit.dart';
 import 'package:test_magnit/presentation/main_screen/main_screen.dart';
 import 'package:test_magnit/themes/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../data/model/user_model.dart';
+import 'data/model/user_model.dart';
 
 Future<void> main()async  {
   WidgetsFlutterBinding.ensureInitialized();

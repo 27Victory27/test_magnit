@@ -5,6 +5,7 @@ part 'auth_state.freezed.dart';
 class AuthState with _$AuthState{
   const factory AuthState.loading() = _Loading;
   const factory AuthState.notAuth() = _NotAuth;
+  const factory AuthState.codeSent() = _CodeSent;
   const factory AuthState.auth() = _Auth;
   const factory AuthState.failure({Object? error}) = _Failure;
 }

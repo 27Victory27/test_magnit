@@ -40,6 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
       codeSent: (String verificationId, int? forceResendingToken) async {
         this.verificationId = verificationId;
+        emit(AuthState.codeSent());
       },
     );
 
@@ -51,6 +52,11 @@ class AuthCubit extends Cubit<AuthState> {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: sms);
 
     // Sign the user in (or link) with the credential
-    await auth.signInWithCredential(credential);
+    final result = await auth.signInWithCredential(credential);
+    if(result.user != null){
+      emit(AuthState.auth());
+    }else{
+      emit(AuthState.failure(error: ""));
+    }
 }
 }

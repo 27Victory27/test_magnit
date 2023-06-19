@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_magnit/data/model/channal_model.dart';
+import 'package:test_magnit/firebase_options.dart';
 import 'package:test_magnit/main/bloc/theme_bloc.dart';
 import 'package:test_magnit/main/bloc/theme_state.dart';
 import 'package:test_magnit/presentation/auth_screen/auth_screen.dart';
@@ -12,10 +13,14 @@ import 'package:test_magnit/presentation/hello_screen/hello_screen.dart';
 import 'package:test_magnit/presentation/main_screen/block/main_cubit.dart';
 import 'package:test_magnit/presentation/main_screen/main_screen.dart';
 import 'package:test_magnit/themes/theme.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import '../data/model/user_model.dart';
 
-void main() {
+Future<void> main()async  {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

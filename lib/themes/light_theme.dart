@@ -19,5 +19,11 @@ ThemeData createLightTheme() {
 
 TextTheme createTextTheme() {
   return const TextTheme(
+    bodyMedium: TextStyle(color: Colors.black),
+  );
+}
+TextTheme createTextThemeDark() {
+  return const TextTheme(
+    bodyMedium: TextStyle(color: Colors.white),
   );
 }

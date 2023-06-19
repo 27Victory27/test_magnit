@@ -48,7 +48,7 @@ class HelloScreen extends StatelessWidget {
                               SizedBox(height: 20),
                               Text(
                                   style: TextStyle(
-                                      fontSize: 25, color: Colors.black),
+                                      fontSize: 25),
                                   'Telegram'),
                               SizedBox(height: 20),
                               Text(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:test_magnit/data/model/chat_element_model.dart';
+import 'package:test_magnit/themes/theme.dart';
 
 import 'block/chat_cubit.dart';
 import 'block/chat_state.dart';
@@ -16,11 +17,12 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScrollController controller = ScrollController();
     // var isEmojiVisible = false.obs;
+    final ThemeColors myColors = Theme.of(context).extension<ThemeColors>()!;
     return Scaffold(
         appBar: AppBar(
             automaticallyImplyLeading: false,
             iconTheme: IconThemeData(color: Colors.white),
-            backgroundColor: Colors.blue,
+            //backgroundColor: Colors.blue,
             title: BlocBuilder<ChatCubit, ChatState>(
                 builder: (BuildContext context, ChatState state) =>
                     state.maybeWhen(
@@ -35,7 +37,6 @@ class ChatScreen extends StatelessWidget {
                         return Text('Упс, ошибка');
                       },
                     ))),
-        backgroundColor: Colors.green,
         body: BlocBuilder<ChatCubit, ChatState>(
           builder: (BuildContext context, ChatState state) => state.when(
             loading: () => CircularProgressIndicator(),
@@ -84,6 +85,7 @@ class ChatScreen extends StatelessWidget {
                         if ((element["message"] as ChatElementModel).userId ==
                             userID) {
                           return MyChatElement(
+                            backgroundColor: myColors.myChatElementBackground,
                             chatMessage:
                                 (element["message"] as ChatElementModel)
                                     .msgText,
@@ -93,6 +95,7 @@ class ChatScreen extends StatelessWidget {
                           );
                         } else {
                           return OtherChatElement(
+                            backgroundColor: myColors.otherChatElementBackground,
                               chatMessage:
                                   (element["message"] as ChatElementModel)
                                       .msgText);
@@ -173,7 +176,7 @@ class _AppBarInfoState extends State<_AppBarInfo> {
                   Text(
                       style:
                           TextStyle(fontSize: 14, color: Colors.blueGrey[100]),
-                      'был(а) в ${widget.onlineTime}')
+                      'Online') //'был(а) в ${widget.onlineTime}')
                 ],
               ),
             ),
@@ -269,9 +272,10 @@ class _AppBarInfoState extends State<_AppBarInfo> {
 class MyChatElement extends StatelessWidget {
   final String chatMessage;
   final String chatMessageTime;
+  final Color backgroundColor;
 
   const MyChatElement(
-      {Key? key, required this.chatMessage, required this.chatMessageTime})
+      {Key? key, required this.chatMessage, required this.chatMessageTime, required this.backgroundColor})
       : super(key: key);
 
   @override
@@ -284,7 +288,7 @@ class MyChatElement extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: 300),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.lightGreen,
+            color: backgroundColor,
           ),
           child: Stack(
             alignment: Alignment.bottomRight,
@@ -312,8 +316,8 @@ class MyChatElement extends StatelessWidget {
 
 class OtherChatElement extends StatelessWidget {
   final String chatMessage;
-
-  const OtherChatElement({Key? key, required this.chatMessage})
+  final Color backgroundColor;
+  const OtherChatElement({Key? key, required this.chatMessage, required this.backgroundColor})
       : super(key: key);
 
   @override
@@ -326,7 +330,7 @@ class OtherChatElement extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: 300),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
+            color: backgroundColor,
           ),
           child: Stack(
             alignment: Alignment.bottomRight,

@@ -1,19 +1,23 @@
 part of 'theme.dart';
 
 class ThemeColors extends ThemeExtension<ThemeColors> {
-  final Color filterButtonFillColor;
+  final Color myChatElementBackground;
+  final Color otherChatElementBackground;
 
   const ThemeColors({
-    required this.filterButtonFillColor,
+    required this.myChatElementBackground,
+    required this.otherChatElementBackground,
   });
 
   @override
   ThemeExtension<ThemeColors> copyWith({
-    Color? filterButtonFillColor,
+    Color? myChatElementBackground,
+    Color? otherChatElementBackground,
   }) {
     return ThemeColors(
-      filterButtonFillColor:
-      filterButtonFillColor ?? this.filterButtonFillColor,
+      myChatElementBackground:
+      myChatElementBackground ?? this.myChatElementBackground,
+      otherChatElementBackground: otherChatElementBackground?? this.otherChatElementBackground,
     );
   }
 
@@ -27,16 +31,19 @@ class ThemeColors extends ThemeExtension<ThemeColors> {
     }
 
     return ThemeColors(
-      filterButtonFillColor:
-      Color.lerp(filterButtonFillColor, other.filterButtonFillColor, t)!,
+      myChatElementBackground:
+      Color.lerp(myChatElementBackground, other.myChatElementBackground, t)!,
+      otherChatElementBackground: Color.lerp(otherChatElementBackground, other.otherChatElementBackground, t)!,
     );
   }
 
   static get light => ThemeColors(
-    filterButtonFillColor: AppColors.grey,
+    myChatElementBackground: Colors.green,
+    otherChatElementBackground: Colors.lightGreen,
   );
 
   static get dark => ThemeColors(
-    filterButtonFillColor: AppColors.white,
+    myChatElementBackground: Colors.purpleAccent,
+    otherChatElementBackground: Color(0xff252D3A)
   );
 }

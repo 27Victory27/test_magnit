@@ -19,7 +19,7 @@ class MainScreen extends StatelessWidget {
         child: Scaffold(
             appBar: AppBar(
               iconTheme: IconThemeData(color: Colors.white),
-              backgroundColor: Colors.blue,
+              //backgroundColor: Colors.blue,
               title: Text(style: TextStyle(color: Colors.white), 'Telegram'),
               actions: [
                 Icon(Icons.search),
@@ -183,7 +183,6 @@ class ChatElement extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(360),
-                color: Colors.black,
               ),
             ),
             SizedBox(width: 5),
@@ -196,7 +195,6 @@ class ChatElement extends StatelessWidget {
                   children: [
                     Text(
                         style: TextStyle(
-                            color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.bold),
                         '${channalModel.nameChennal}'),

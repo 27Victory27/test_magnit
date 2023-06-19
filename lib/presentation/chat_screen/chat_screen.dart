@@ -19,10 +19,11 @@ class ChatScreen extends StatelessWidget {
     // var isEmojiVisible = false.obs;
     final ThemeColors myColors = Theme.of(context).extension<ThemeColors>()!;
     return Scaffold(
+      backgroundColor: myColors.ThemeChatBackground,
         appBar: AppBar(
             automaticallyImplyLeading: false,
             iconTheme: IconThemeData(color: Colors.white),
-            //backgroundColor: Colors.blue,
+            //backgroundColor: myColors.ThemeChatBackground,
             title: BlocBuilder<ChatCubit, ChatState>(
                 builder: (BuildContext context, ChatState state) =>
                     state.maybeWhen(

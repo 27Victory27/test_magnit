@@ -397,6 +397,7 @@ class _EmojiState extends State<Emoji> {
               focusNode: focusNode,
               textInputAction: TextInputAction.done,
               onSubmitted: (msg) {
+                textEditingController.clear();
                 context.read<ChatCubit>().addMassege(msg);
                 widget.controller.animateTo(
                     widget.controller.position.minScrollExtent + 1,

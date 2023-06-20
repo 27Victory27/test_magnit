@@ -33,8 +33,8 @@ class _AuthScreenState extends State<AuthScreen> {
             body: BlocBuilder<AuthCubit, AuthState>(
               builder: (BuildContext context, AuthState state) => state.when(
                 auth: () {
-                  Navigator.of(context)
-                      .pushReplacementNamed('/main_screen');
+                  Future.delayed(Duration.zero,()=> Navigator.of(context)
+                      .pushReplacementNamed('/main_screen'));
                   return CircularProgressIndicator();
                   },
                 notAuth: () => ListView(
